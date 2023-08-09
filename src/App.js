@@ -1,23 +1,47 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Header from './components/Header';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
 import './App.css';
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState('');
+  const [showLogin, setShowLogin] = useState(true);
+  const [showSignup, setShowSignup] = useState(false);
+
+  const handleLogin = (username) => {
+    setLoggedInUser(username);
+  };
+
+  const handleSignup = (username) => {
+    setLoggedInUser(username);
+  };
+
+  const handleLoginClick = () => {
+    setShowLogin(true);
+    setShowSignup(false);
+  };
+
+  const handleSignupClick = () => {
+    setShowLogin(false);
+    setShowSignup(true);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header
+        onLoginClick={handleLoginClick}
+        onSignupClick={handleSignupClick}
+      />
+      {loggedInUser ? (
+        <Dashboard username={loggedInUser} />
+      ) : (
+        <>
+          {showLogin && <Login onLogin={handleLogin} />}
+          {showSignup && <Signup onSignup={handleSignup} />}
+        </>
+      )}
     </div>
   );
 }
